@@ -1,0 +1,9 @@
+[submodule "logger"]
+	path = logger
+	url = https://github.com/dakv/logger.git
+[submodule "varint"]
+	path = varint
+	url = https://github.com/dakv/varint.git
+[submodule "rb_tree"]
+	path = rb_tree
+	url = https://github.com/dakv/rb_tree.git

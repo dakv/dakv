@@ -1,0 +1,89 @@
+2021-07-29T12:56:26.339708+08:00 D src/db/database.rs 212 open db
+2021-07-29T12:56:26.341098+08:00 I src/db/database.rs 276 recover database
+2021-07-29T12:56:26.341892+08:00 I src/db/database.rs 246 new database test_data_test_deletion_markers21627534586.337327
+2021-07-29T12:56:26.343118+08:00 I src/db/database.rs 265 set_current_file
+2021-07-29T12:56:26.344115+08:00 I src/db/version_linked_list.rs 306 recover version set
+2021-07-29T12:56:26.344504+08:00 I src/db/version_linked_list.rs 330 read CURRENT file test_data_test_deletion_markers21627534586.337327/MANIFEST-000001
+2021-07-29T12:56:26.355223+08:00 I src/db/database.rs 1065 delete file MANIFEST-000001
+2021-07-29T12:56:26.355505+08:00 D src/db/database.rs 484 empty immutable table
+2021-07-29T12:56:26.355701+08:00 D src/db/database.rs 1309 start the compaction worker
+2021-07-29T12:56:26.355968+08:00 D src/db/database.rs 1356 start the write worker
+2021-07-29T12:56:26.356179+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.356526+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.356764+08:00 D src/db/database.rs 1872 test_compact_mem_table
+2021-07-29T12:56:26.356993+08:00 D src/db/database.rs 1876 write
+2021-07-29T12:56:26.367422+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.367624+08:00 D src/db/database.rs 1228 mem -> imm
+2021-07-29T12:56:26.367831+08:00 D src/db/database.rs 489 compaction scheduled false false
+2021-07-29T12:56:26.368053+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.368193+08:00 D src/db/database.rs 1878 write done
+2021-07-29T12:56:26.368350+08:00 D src/db/database.rs 1883 go lock
+2021-07-29T12:56:26.368529+08:00 D src/db/database.rs 1885 in lock
+2021-07-29T12:56:26.368759+08:00 D src/db/database.rs 1314 accept_compaction
+2021-07-29T12:56:26.368928+08:00 D src/db/database.rs 504 background compaction
+2021-07-29T12:56:26.369098+08:00 D src/db/database.rs 509 imm not null
+2021-07-29T12:56:26.369258+08:00 D src/db/database.rs 913 compact imm table
+2021-07-29T12:56:26.369428+08:00 D src/db/database.rs 958 write_level0_table
+2021-07-29T12:56:26.369591+08:00 I src/db/database.rs 966 Level-0 table file 5: started
+2021-07-29T12:56:26.369756+08:00 I src/table/table_cache.rs 77 table cache miss
+2021-07-29T12:56:26.369923+08:00 I src/db/database.rs 983 Level-0 table file:5 bytes:117
+2021-07-29T12:56:26.370072+08:00 I src/db/database.rs 1065 delete file 000003.log
+2021-07-29T12:56:26.370205+08:00 D src/db/database.rs 484 empty immutable table
+2021-07-29T12:56:26.370343+08:00 D src/db/database.rs 1333 notify
+2021-07-29T12:56:26.370495+08:00 D src/db/database.rs 1335 notify done
+2021-07-29T12:56:26.370680+08:00 D src/db/database.rs 1891 wake up
+2021-07-29T12:56:26.370876+08:00 D src/db/database.rs 1893 test_compact_mem_table go
+2021-07-29T12:56:26.371036+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.371245+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.378906+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.379232+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.382656+08:00 D src/db/database.rs 1872 test_compact_mem_table
+2021-07-29T12:56:26.382933+08:00 D src/db/database.rs 1876 write
+2021-07-29T12:56:26.383242+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.383668+08:00 D src/db/database.rs 1228 mem -> imm
+2021-07-29T12:56:26.384463+08:00 D src/db/database.rs 489 compaction scheduled false false
+2021-07-29T12:56:26.384899+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.386092+08:00 D src/db/database.rs 1314 accept_compaction
+2021-07-29T12:56:26.386312+08:00 D src/db/database.rs 504 background compaction
+2021-07-29T12:56:26.386565+08:00 D src/db/database.rs 509 imm not null
+2021-07-29T12:56:26.386801+08:00 D src/db/database.rs 913 compact imm table
+2021-07-29T12:56:26.387609+08:00 D src/db/database.rs 958 write_level0_table
+2021-07-29T12:56:26.387771+08:00 I src/db/database.rs 966 Level-0 table file 7: started
+2021-07-29T12:56:26.387894+08:00 D src/db/database.rs 1878 write done
+2021-07-29T12:56:26.388003+08:00 D src/db/database.rs 1883 go lock
+2021-07-29T12:56:26.388096+08:00 D src/db/database.rs 1885 in lock
+2021-07-29T12:56:26.388197+08:00 I src/table/table_cache.rs 77 table cache miss
+2021-07-29T12:56:26.388291+08:00 I src/db/database.rs 983 Level-0 table file:7 bytes:133
+2021-07-29T12:56:26.388388+08:00 I src/db/database.rs 1065 delete file 000004.log
+2021-07-29T12:56:26.388477+08:00 D src/db/database.rs 484 empty immutable table
+2021-07-29T12:56:26.388592+08:00 D src/db/database.rs 1333 notify
+2021-07-29T12:56:26.388714+08:00 D src/db/database.rs 1335 notify done
+2021-07-29T12:56:26.388821+08:00 D src/db/database.rs 1891 wake up
+2021-07-29T12:56:26.388934+08:00 D src/db/database.rs 1893 test_compact_mem_table go
+2021-07-29T12:56:26.392108+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.392325+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.392448+08:00 I src/table/table_cache.rs 77 table cache miss
+2021-07-29T12:56:26.392570+08:00 I src/table/table_reader.rs 118 block cache miss
+2021-07-29T12:56:26.392710+08:00 I src/table/table_cache.rs 77 table cache miss
+2021-07-29T12:56:26.392825+08:00 I src/table/table_reader.rs 118 block cache miss
+2021-07-29T12:56:26.392953+08:00 D src/db/database.rs 1872 test_compact_mem_table
+2021-07-29T12:56:26.393089+08:00 D src/db/database.rs 1876 write
+2021-07-29T12:56:26.397660+08:00 D src/db/database.rs 1161 make_room_for_write
+2021-07-29T12:56:26.397785+08:00 D src/db/database.rs 1228 mem -> imm
+2021-07-29T12:56:26.397901+08:00 D src/db/database.rs 489 compaction scheduled false false
+2021-07-29T12:56:26.398023+08:00 D src/db/database.rs 1197 There is room in current memtable
+2021-07-29T12:56:26.398158+08:00 D src/db/database.rs 1314 accept_compaction
+2021-07-29T12:56:26.398277+08:00 D src/db/database.rs 504 background compaction
+2021-07-29T12:56:26.398411+08:00 D src/db/database.rs 509 imm not null
+2021-07-29T12:56:26.398540+08:00 D src/db/database.rs 913 compact imm table
+2021-07-29T12:56:26.398683+08:00 D src/db/database.rs 958 write_level0_table
+2021-07-29T12:56:26.398831+08:00 I src/db/database.rs 966 Level-0 table file 9: started
+2021-07-29T12:56:26.398957+08:00 I src/table/table_cache.rs 77 table cache miss
+2021-07-29T12:56:26.399081+08:00 I src/db/database.rs 983 Level-0 table file:9 bytes:115
+2021-07-29T12:56:26.399221+08:00 D src/db/database.rs 1878 write done
+2021-07-29T12:56:26.399355+08:00 D src/db/database.rs 1883 go lock
+2021-07-29T12:56:26.399496+08:00 I src/db/database.rs 1065 delete file 000006.log
+2021-07-29T12:56:26.399609+08:00 D src/db/database.rs 484 empty immutable table
+2021-07-29T12:56:26.399721+08:00 D src/db/database.rs 1333 notify
+2021-07-29T12:56:26.399848+08:00 D src/db/database.rs 1885 in lock
+2021-07-29T12:56:26.400001+08:00 D src/db/database.rs 1335 notify done

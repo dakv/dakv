@@ -1,0 +1,18 @@
+on: [push, pull_request]
+name: test
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.54.0
+          override: true
+      - uses: actions-rs/tarpaulin@v0.1
+      - uses: codecov/codecov-action@v2.1.0
+#        with:
+          #args: '-- --test-threads 1'

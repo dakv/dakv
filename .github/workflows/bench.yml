@@ -1,0 +1,26 @@
+name: benchmarks
+on:
+  push:
+    branches:
+      - bench
+  pull_request:
+    branches:
+      - bench
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  benchmarks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: benchmarks
+        run: cargo bench --verbose
