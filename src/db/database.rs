@@ -62,41 +62,34 @@ impl<T> Channel<T> {
 }
 
 pub struct Inner {
+    // Database property
     db_name: String,
     options: Options,
     env: Arc<dyn Env + Send + Sync>,
     internal_comparator: Arc<dyn InternalKeyComparator + Send + Sync>,
     snapshots: SnapshotList,
-    seed: AtomicU32,
-    /// RwLock just make it easy to modify the value, and avoid mutable check.
-    mem: RwLock<Option<MemoryTable>>,
+    seed: AtomicU32, // random seed for DBIter
+    bg_error: RwLock<DResult<()>>,
+    shutting_down: AtomicBool,
+    // Table, TableCache and VersionManager
+    mem: RwLock<Option<MemoryTable>>, // RwLock makes it easy to modify.
     imm: RwLock<Option<MemoryTable>>,
-
+    has_imm: AtomicBool,
     table_cache: Arc<TableCache>,
-    /// Use `log_file_num` to generate file name, and create a new `log` as WAL log.
+    writers: Mutex<VecDeque<BatchWriter>>,
+    version_manager: Mutex<VersionManager>,
+    // Log file
     log_file_num: AtomicU64,
     log: Mutex<Option<LogWriter>>,
-
+    // For compaction
     pending_outputs: Arc<Mutex<HashSet<u64>>>,
     manual_compaction: Arc<Mutex<Option<Arc<Mutex<ManualCompaction>>>>>,
-    /// Append new BatchWriter to writers.
-    writers: Mutex<VecDeque<BatchWriter>>,
-    process_batch_sem: Channel<()>,
-    /// `version_manager` and `background_work_finished_signal` make couple
-    version_manager: Mutex<VersionManager>,
-    // fix `test_compact_mem_table` stuck issue, lock after being notified, so use Channel to replace it.
-    background_work_finished_signal: Channel<()>,
-
-    bg_error: RwLock<DResult<()>>,
-    /// Use `crossbeam_channel` to replace CondVar to trigger compaction.
-    compact_channel: Channel<()>,
-    /// Has a background compaction been scheduled or is running?
-    background_compaction_scheduled: AtomicBool,
-    /// Check if the db is shutting down.
-    shutting_down: AtomicBool,
-    has_imm: AtomicBool,
-
     stats: Arc<Mutex<[CompactionStats; LEVEL_NUMBER]>>,
+    background_compaction_scheduled: AtomicBool,
+    // Signals
+    compact_channel: Channel<()>,
+    background_work_finished_channel: Channel<()>, // fix `test_compact_mem_table` stuck issue, lock after being notified, so use Channel to replace it.
+    process_batch_channel: Channel<()>,
     // todo db_lock
 }
 
@@ -187,14 +180,14 @@ impl Inner {
             log_file_num: AtomicU64::new(0),
             snapshots: SnapshotList::new(),
             writers: Mutex::new(VecDeque::new()),
-            process_batch_sem: Channel::new(),
+            process_batch_channel: Channel::new(),
             version_manager: Mutex::new(VersionManager::new(
                 table_cache.clone(),
                 options.clone(),
                 internal_comparator.clone(),
                 db_name.clone(),
             )),
-            background_work_finished_signal: Channel::new(),
+            background_work_finished_channel: Channel::new(),
             bg_error: RwLock::new(Ok(())),
             compact_channel: Channel::new(),
             background_compaction_scheduled: AtomicBool::new(false),
@@ -687,7 +680,7 @@ impl Inner {
                         "imm not null in do_compaction_work"
                     );
                     self.compact_immutable_mem_table();
-                    ignore!(self.background_work_finished_signal.send(()));
+                    ignore!(self.background_work_finished_channel.send(()));
                 }
                 imm_micros += get_micro() - imm_start;
             }
@@ -1090,7 +1083,7 @@ impl Inner {
     fn record_background_error(&self, s: DResult<()>) {
         if self.bg_error.read().unwrap().is_ok() {
             *self.bg_error.write().unwrap() = s;
-            ignore!(self.background_work_finished_signal.send(()));
+            ignore!(self.background_work_finished_channel.send(()));
         }
     }
 
@@ -1209,7 +1202,7 @@ impl Inner {
                     self.options.info_log.as_ref().unwrap(),
                     "Current memtable full; waiting..."
                 );
-                ignore!(self.background_work_finished_signal.recv());
+                ignore!(self.background_work_finished_channel.recv());
             } else if self.version_manager.lock().unwrap().num_level_files(0)
                 >= L0_STOP_WRITES_TRIGGER
             {
@@ -1218,7 +1211,7 @@ impl Inner {
                     self.options.info_log.as_ref().unwrap(),
                     "Too many L0 files; waiting..."
                 );
-                ignore!(self.background_work_finished_signal.recv());
+                ignore!(self.background_work_finished_channel.recv());
             } else {
                 debug!(self.options.info_log.as_ref().unwrap(), "mem -> imm");
                 let new_log_num = self.version_manager.lock().unwrap().new_file_num();
@@ -1325,7 +1318,7 @@ impl DB {
                     // so reschedule another compaction if needed.
                     db.maybe_schedule_compaction();
                     debug!(db.options.info_log.as_ref().unwrap(), "notify");
-                    ignore!(db.background_work_finished_signal.send(()));
+                    ignore!(db.background_work_finished_channel.send(()));
                     debug!(db.options.info_log.as_ref().unwrap(), "notify done");
                 }
                 info!(
@@ -1351,7 +1344,7 @@ impl DB {
                     db.options.info_log.as_ref().unwrap(),
                     "start the write worker"
                 );
-                while let Ok(()) = db.process_batch_sem.recv() {
+                while let Ok(()) = db.process_batch_channel.recv() {
                     if db.shutting_down.load(Ordering::Acquire) {
                         break;
                     }
@@ -1585,12 +1578,15 @@ impl Database for DB {
         let w = BatchWriter::new(opt.sync, batch, sender);
         self.inner.writers.lock().unwrap().push_back(w);
         // notify the writer thread to write batch.
-        self.inner.process_batch_sem.send(()).unwrap_or_else(|err| {
-            error!(
-                self.inner.options.info_log.as_ref().unwrap(),
-                "send process_batch_sem failed {:?}", err
-            );
-        });
+        self.inner
+            .process_batch_channel
+            .send(())
+            .unwrap_or_else(|err| {
+                error!(
+                    self.inner.options.info_log.as_ref().unwrap(),
+                    "send process_batch_sem failed {:?}", err
+                );
+            });
         // Write result will be send by this channel.
         match receiver.recv() {
             Ok(ret) => ret,
@@ -1630,12 +1626,15 @@ impl Database for DB {
 
         // send a signal to the compact thread to wake up, and
         self.inner.trigger_compaction();
-        self.inner.process_batch_sem.send(()).unwrap_or_else(|err| {
-            error!(
-                self.inner.options.info_log.as_ref().unwrap(),
-                "send process_batch_sem failed {:?}", err
-            );
-        });
+        self.inner
+            .process_batch_channel
+            .send(())
+            .unwrap_or_else(|err| {
+                error!(
+                    self.inner.options.info_log.as_ref().unwrap(),
+                    "send process_batch_sem failed {:?}", err
+                );
+            });
         ignore!(self.inner.env.unlock_file(&self.inner.db_name));
         Ok(())
     }
@@ -1850,7 +1849,7 @@ impl TestExt for DB {
                 self.inner.maybe_schedule_compaction();
             } else {
                 // Running either my compaction or another compaction.
-                ignore!(self.inner.background_work_finished_signal.recv());
+                ignore!(self.inner.background_work_finished_channel.recv());
             }
         }
         let mut manual_compaction = self.inner.manual_compaction.lock().unwrap();
@@ -1875,7 +1874,7 @@ impl TestExt for DB {
             && self.inner.bg_error.read().unwrap().is_ok()
         {
             debug!(self.inner.options.info_log.as_ref().unwrap(), "go lock");
-            ignore!(self.inner.background_work_finished_signal.recv());
+            ignore!(self.inner.background_work_finished_channel.recv());
             debug!(self.inner.options.info_log.as_ref().unwrap(), "wake up");
         }
         debug!(
