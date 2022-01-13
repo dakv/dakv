@@ -47,21 +47,12 @@ impl Iter for EmptyIterator {
 // caches the valid() and key() results for an underlying iterator.
 // This can help avoid virtual function calls and also gives better
 // cache locality.
+#[derive(Default)]
 struct IteratorWrapper {
     valid: bool,
     // BlockIter or LevelFileNumIterator or SkipListIter
     iter: Option<Box<dyn Iter>>,
     key: Vec<u8>,
-}
-
-impl Default for IteratorWrapper {
-    fn default() -> Self {
-        Self {
-            valid: false,
-            iter: None,
-            key: Default::default(),
-        }
-    }
 }
 
 impl IteratorWrapper {
