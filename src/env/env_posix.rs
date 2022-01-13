@@ -4,7 +4,7 @@ use crate::env::lock_table::PosixLockTable;
 use crate::env::mmap::MmapReadableFile;
 use crate::env::Env;
 use crate::env::{RandomAccessFile, SequentialFile, WritableFile};
-use std::collections::HashMap;
+use hashbrown::HashMap;
 use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 use std::os::unix::fs::OpenOptionsExt;
 use std::path::Path;

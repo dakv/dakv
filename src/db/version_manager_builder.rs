@@ -3,9 +3,9 @@ use crate::db::version_edit::VersionEdit;
 use crate::db::{FileMetaData, LEVEL_NUMBER};
 use crate::utils::algorithm::UpperBound;
 use crate::utils::cmp::InternalKeyComparator;
+use hashbrown::HashSet;
 use rb_tree::{Comparator, RBSet};
 use std::cmp::Ordering;
-use std::collections::HashSet;
 use std::mem::MaybeUninit;
 use std::sync::Arc;
 

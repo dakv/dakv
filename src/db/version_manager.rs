@@ -18,9 +18,9 @@ use crate::env::Env;
 use crate::table::TableCache;
 use crate::utils::cmp::InternalKeyComparator;
 use crate::utils::iter::Iter;
+use hashbrown::HashSet;
 use slog::{debug, error, info};
 use std::cmp::Ordering;
-use std::collections::HashSet;
 use std::iter;
 use std::sync::{Arc, RwLock};
 

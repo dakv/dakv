@@ -2,7 +2,7 @@ use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 use std::marker::PhantomData;
 
-use std::collections::HashMap;
+use hashbrown::HashMap;
 use std::mem;
 use std::mem::MaybeUninit;
 use std::ptr;
