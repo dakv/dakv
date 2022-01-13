@@ -2154,11 +2154,11 @@ mod test {
     fn test_multi_threaded() {}
 
     struct ModelDB {
-        map: RBMap<String, String>,
+        map: RBMap<Vec<u8>, Vec<u8>>,
     }
 
     struct ModelIter<'a> {
-        pub map: &'a RBMap<String, String>,
+        pub map: &'a RBMap<Vec<u8>, Vec<u8>>,
         index: usize,
         key: Vec<u8>,
         value: Vec<u8>,
@@ -2173,8 +2173,8 @@ mod test {
             self.index = 0;
             if self.valid() {
                 if let Some(tmp) = self.map.iter().skip(self.index).next() {
-                    self.key = tmp.0.as_bytes().to_vec();
-                    self.value = tmp.1.as_bytes().to_vec();
+                    self.key = tmp.0.clone();
+                    self.value = tmp.1.clone();
                 }
             }
         }
@@ -2217,8 +2217,8 @@ mod test {
             self.index += 1;
             if self.valid() {
                 if let Some(tmp) = self.map.iter().skip(self.index).next() {
-                    self.key = tmp.0.as_bytes().to_vec();
-                    self.value = tmp.1.as_bytes().to_vec();
+                    self.key = tmp.0.clone();
+                    self.value = tmp.1.clone();
                 }
             }
         }
@@ -2244,7 +2244,7 @@ mod test {
 
     #[derive(Clone)]
     struct ModelSnapshot {
-        map: RBMap<String, String>,
+        map: RBMap<Vec<u8>, Vec<u8>>,
     }
 
     impl ModelDB {
@@ -2263,22 +2263,16 @@ mod test {
         fn write(&mut self, batch: Option<WriteBatch>, _opt: WriteOptions) -> DResult<()> {
             let b = batch.unwrap();
             struct MockHandler<'a> {
-                map: &'a mut RBMap<String, String>,
+                map: &'a mut RBMap<Vec<u8>, Vec<u8>>,
             }
 
             impl<'a> TableInserter for MockHandler<'a> {
                 fn put(&mut self, key: &[u8], val: &[u8]) {
-                    unsafe {
-                        self.map.insert(
-                            String::from_utf8_unchecked(key.to_vec()),
-                            String::from_utf8_unchecked(val.to_vec()),
-                        );
-                    }
+                    self.map.insert(key.to_vec(), val.to_vec());
                 }
 
                 fn delete(&mut self, key: &[u8]) {
-                    self.map
-                        .remove(unsafe { &String::from_utf8_unchecked(key.to_vec()) });
+                    self.map.remove(&key.to_vec());
                 }
             }
 
