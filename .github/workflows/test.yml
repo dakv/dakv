@@ -10,7 +10,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: 1.54.0
+          toolchain: 1.57.0
           override: true
       - uses: actions-rs/tarpaulin@v0.1
       - uses: codecov/codecov-action@v2.1.0
