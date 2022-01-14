@@ -65,12 +65,13 @@ codegen-units = 4
 debug-assertions = true
 
 # The release profile, used for `cargo build --release`
+# See more details from `https://github.com/johnthagen/min-sized-rust`
+# TODO: Use the build-std feature when it's stable. https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 [profile.release]
-lto = true
-opt-level = 3
-debug = true
-# TODO: remove this once rust-lang/rust#50199 and rust-lang/rust#53833 are resolved.
-codegen-units = 1
+opt-level = 'z'     # Optimize for size.
+lto = true          # Enable Link Time Optimization
+codegen-units = 1   # Reduce number of codegen units to increase optimizations.
+panic = 'abort'     # Abort on panic
 
 # The benchmark profile is identical to release, except that lto = false
 [profile.bench]
