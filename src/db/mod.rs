@@ -68,7 +68,7 @@ pub trait Database {
 
     /// This MultiGet is a batched version, which may be faster than calling Get
     /// multiple times.
-    /// todo fn multi_get(&self, key: &[u8], read_opt: ReadOptions) -> DResult<Vec<u8>>;
+    /// TODO: fn multi_get(&self, key: &[u8], read_opt: ReadOptions) -> DResult<Vec<u8>>;
 
     /// Write multiple entries into database. By default, `get` and `delete` use this
     /// method to insert key value entry.

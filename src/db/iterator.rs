@@ -128,7 +128,7 @@ impl Iter for IteratorWrapper {
     }
 }
 
-// fixme [trait aliases are experimental]
+// FIXME: [trait aliases are experimental]
 // trait two_level_fn = FnMut(
 //     ReadOptions,
 //     &[u8],

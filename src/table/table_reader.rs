@@ -52,7 +52,7 @@ pub fn read_block(
             result.data = Vec::from(&data[0..n]);
             result.cacheable = true;
             result.heap_allocated = true;
-            // todo heap_allocated is unused
+            // TODO: heap_allocated is unused
             // result->heap_allocated = true;
             // result->cachable = true;
         }
@@ -145,7 +145,7 @@ pub struct Table {
     index_block: Block,
     meta_index_handle: BlockHandle,
     filter: Option<Arc<FilterBlockReader>>,
-    // todo raw pointer?
+    // TODO: raw pointer?
     // pub filter_data: *const u8,
     block: Option<Arc<BlockContents>>, // Ensure that BlockContents are not released..
 }
@@ -358,7 +358,7 @@ impl Table {
                 if block_iter.valid() {
                     func(arg, block_iter.key(), block_iter.value())
                 }
-                // todo s = block_iter->status();
+                // TODO: s = block_iter->status();
             }
         }
         Ok(())

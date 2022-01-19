@@ -146,7 +146,7 @@ impl Reader {
                 let actual_crc = value(&self.buffer.as_slice()[6..7 + length]);
                 if actual_crc != expected_crc {
                     self.buffer.clear();
-                    // todo ReportCorruption
+                    // TODO: ReportCorruption
                     return RecordType::BadRecord;
                 }
             }

@@ -375,7 +375,7 @@ impl VersionManager {
                 prev_log_number = 0;
             }
 
-            // todo self.mark_file_number_used(prev_log_number);
+            // TODO: self.mark_file_number_used(prev_log_number);
             if self.next_file_number <= prev_log_number {
                 self.next_file_number = prev_log_number + 1;
             }
@@ -598,7 +598,7 @@ impl VersionManager {
         }
     }
 
-    // todo test
+    // TODO: test
     fn get_range2(
         &self,
         inputs1: &[Arc<FileMetaData>],
@@ -627,7 +627,7 @@ impl VersionManager {
 
         // Level-0 files have to be merged together. For other levels,
         // we will make a concatenating iterator per level.
-        // TODO(opt): use concatenating iterator for level-0 if there is no overlap
+        // TODO:(opt): use concatenating iterator for level-0 if there is no overlap
         let space = if c.level() == 0 {
             c.num_input_files(0) + 1
         } else {
@@ -826,7 +826,7 @@ impl VersionManager {
         Some(c)
     }
 
-    /// todo benchmark 10,000 files
+    /// TODO: benchmark 10,000 files
     /// 1.get key range [smallest,largest] from level n.
     /// 2.get overlapping files from level[n+1] by range [smallest,largest], puts in inputs[1]
     /// 3.get range [all_start,all_limit] from level[n] and level[n+1].
@@ -1026,7 +1026,7 @@ impl VersionManager {
     }
 }
 
-// todo
+// TODO:
 #[derive(Debug, Default)]
 pub struct LevelSummaryStorage {
     buffer: String,

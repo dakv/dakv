@@ -44,7 +44,7 @@ impl From<u8> for CompressionType {
     }
 }
 
-// todo remove Clone and use Arc<Options>
+// TODO: remove Clone and use Arc<Options>
 #[derive(Clone)]
 pub struct Options {
     /// Create database if specific database does not exist.
@@ -161,7 +161,7 @@ impl ReadOptions {
     }
 }
 
-// todo remove clone
+// TODO: remove clone
 #[derive(Clone, Default)]
 pub struct WriteOptions {
     /// If true, the write will be flushed from the operating system

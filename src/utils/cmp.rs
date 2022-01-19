@@ -74,7 +74,6 @@ pub trait Comparator: BaseComparator {
     fn name(&self) -> &'static str;
 }
 
-// todo NEED CHECK !
 pub trait InternalKeyComparator: Comparator {
     fn user_comparator(&self) -> Arc<dyn Comparator + Send + Sync>;
     fn into_cmp(self: Arc<Self>) -> Arc<dyn Comparator + Send + Sync>;
@@ -92,7 +91,7 @@ impl BytewiseComparatorImpl {
 
 impl BaseComparator for BytewiseComparatorImpl {
     fn compare(&self, a: &[u8], b: &[u8]) -> Ordering {
-        // todo a.cmp(b)
+        // TODO: a.cmp(b)
         let min_len = min(a.len(), b.len());
         let mut r = a[..min_len].cmp(&b[..min_len]);
         if r == Ordering::Equal {

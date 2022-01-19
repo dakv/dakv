@@ -2,7 +2,7 @@ use crate::db::format::SequenceNumber;
 use std::sync::{Arc, RwLock};
 
 // Snapshots are kept in a doubly-linked list in the DB.
-// todo refactor to SnapNode{seq:SequenceNumber}
+// TODO: refactor to SnapNode{seq:SequenceNumber}
 #[derive(Clone)]
 pub struct SnapNode {
     seq: SequenceNumber,

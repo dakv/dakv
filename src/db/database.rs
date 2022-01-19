@@ -90,7 +90,7 @@ pub struct Inner {
     compact_channel: Channel<()>,
     background_work_finished_channel: Channel<()>, // fix `test_compact_mem_table` stuck issue, lock after being notified, so use Channel to replace it.
     process_batch_channel: Channel<()>,
-    // todo db_lock
+    // TODO: db_lock
 }
 
 fn clip_to_range<T>(v: &mut T, min: T, max: T)
@@ -395,7 +395,7 @@ impl Inner {
                     self.options.info_log.as_ref().unwrap(),
                     "error data.len() < 12 "
                 );
-                // todo reporter
+                // TODO: reporter
                 continue;
             }
             batch.set_contents(data.as_slice());
@@ -1027,7 +1027,7 @@ impl Inner {
         let mut number = 0;
         let mut file_type = FileType::TempFile;
         // Get all files in the directory
-        // todo if get_children failed, it will panic.
+        // If `get_children` fails, return empty vector.
         for file in self.env.get_children(&self.db_name).unwrap_or_default() {
             if parse_file_name(&file, &mut number, &mut file_type) {
                 let keep;
@@ -1051,7 +1051,7 @@ impl Inner {
                 }
                 if !keep {
                     if file_type == FileType::TableFile {
-                        // todo self.table_cache.Evict(number);
+                        // TODO: self.table_cache.Evict(number);
                     }
                     info!(
                         self.options.info_log.as_ref().unwrap(),

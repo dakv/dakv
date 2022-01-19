@@ -1935,7 +1935,7 @@ mod test {
 
     #[test]
     fn test_locking() {
-        // todo
+        // TODO:
     }
 
     #[test]

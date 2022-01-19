@@ -17,7 +17,7 @@ pub trait SequentialFile {
     /// written by this routine. Sets `result` to the data that was
     /// read (including if fewer than "n" bytes were successfully read).
     /// If an error was encountered, returns a non-OK status.
-    /// todo maybe remove n
+    /// TODO: maybe remove n
     fn read(&self, n: usize, result: &mut [u8]) -> DResult<usize>;
     /// Skip "n" bytes from the file. This is guaranteed to be no
     /// slower that reading the same data, but may be faster.

@@ -146,7 +146,7 @@ impl WriteBatch {
         batch.iterate(insert)
     }
 
-    // todo improve the clone slice.
+    // TODO: improve the clone slice.
     pub fn append(&mut self, src: &WriteBatch) {
         self.set_count(self.count() + src.count());
         assert!(src.rep.len() >= BATCH_HEADER_SIZE);

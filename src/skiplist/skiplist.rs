@@ -418,7 +418,7 @@ mod tests {
     #[test]
     #[ignore]
     fn test_concurrency() {
-        // todo concurrent test
+        // TODO: concurrent test
         // let sl: SkipList<Random, DefaultComparator, ArenaImpl> = SkipList::default();
         // for i in 0..12 {
         //     let mut csl = sl.clone();

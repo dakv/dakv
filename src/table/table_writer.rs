@@ -162,7 +162,7 @@ impl TableBuilder {
             }
             CompressionType::Snappy => {
                 compressed_output = compressor.compress(raw).unwrap();
-                // todo error!("")
+                // TODO: error!("")
                 if compressed_output.len() < raw.len() - (raw.len() / 8) {
                     compression_type = CompressionType::Snappy;
                     block_contents = compressed_output.as_slice();

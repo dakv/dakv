@@ -81,7 +81,7 @@ quick_error! {
     }
 }
 
-// fixme clone
+// FIXME: clone
 impl Clone for DError {
     fn clone(&self) -> Self {
         DError::CustomErrorStr(self.to_string())

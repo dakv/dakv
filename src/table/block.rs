@@ -40,7 +40,7 @@ fn decode_key_value_entry<'a>(
         // Fast path: all three values are encoded in one byte each
         ret = &ret[3..];
     } else {
-        // fixme [destructuring assignments are unstable]
+        // FIXME: [destructuring assignments are unstable]
         let (rr, success) = get_varint32_ptr(ret, limit_ptr.as_ptr(), shared);
         if !success {
             return None;
@@ -80,7 +80,7 @@ pub struct Block {
     contents: Arc<BlockContents>,
     // Offset in data_ of restart array
     restart_offset: u32,
-    // todo remove owned
+    // TODO: remove owned
     owned: bool,
 }
 

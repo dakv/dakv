@@ -52,7 +52,7 @@ pub fn get_varint32_ptr<'a>(p: &'a [u8], limit: *const u8, v: &mut u32) -> (&'a 
     get_varint32_ptr_fallback(p, limit, v)
 }
 
-// todo replace with u32::decode_varint?
+// TODO: replace with u32::decode_varint?
 // read the varint value, and skip the varint prefix.
 pub fn get_varint32(p: &mut &[u8], value: &mut u32) -> bool {
     let (ret, success) = get_varint32_ptr(p, p[p.len()..].as_ptr(), value);

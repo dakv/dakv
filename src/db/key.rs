@@ -18,7 +18,7 @@ use std::str::from_utf8;
 pub struct InternalKey {
     pub rep: Vec<u8>,
 }
-// fixme rep clone
+// FIXME: rep clone
 
 impl InternalKey {
     pub fn new(user_key: &[u8], sequence: SequenceNumber, value_type: ValueType) -> Self {

@@ -77,7 +77,7 @@ impl TableCache {
     ) -> DResult<()> {
         let table = self.find_table(file_number, file_size)?;
         table.internal_get(read_opt, k, arg, func)?;
-        // todo cache_->Release(handle);
+        // TODO: cache_->Release(handle);
         Ok(())
     }
 }
@@ -98,7 +98,7 @@ mod test {
             .new_writable_file(&format!("test/000001.{}", FileType::TableFile.to_str()))
             .unwrap();
         f.append(vec![0; 100].as_slice()).unwrap();
-        // todo
+        // TODO:
         // let mut tc = TableCache::new("test".to_string(), Arc::new(opt), 1);
         // assert_eq!(tc.cache.read().unwrap().total_charge(), 0);
         // let _table = tc.find_table(1, 100).unwrap();

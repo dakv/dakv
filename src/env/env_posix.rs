@@ -560,7 +560,7 @@ mod test {
 
     #[test]
     fn test_run_immediately() {
-        // todo
+        // TODO:
     }
 
     #[test]
@@ -612,6 +612,6 @@ mod test {
 
     #[test]
     fn test_reopen_appendable_file() {
-        // todo
+        // TODO:
     }
 }
