@@ -10,24 +10,19 @@
 sequenceDiagram
 autonumber
 participant dakv
-
     participant W as writer worker
     participant C as compaction worker
-
     Note over dakv: main thread
     Note over W: writer thread
     Note over C: compaction thread
-
     dakv->>W: start writer worker
     dakv->>C: start compaction worker
-
     loop
         W-->>W: wait for writer signal
     end
     loop
         C-->>C: Wait for compaction signal
     end
-
     participant Log as write ahead log
     participant Mem as memtable
     dakv->>W: write kv record
@@ -36,8 +31,6 @@ participant dakv
     W->>Mem: insert into memtable
     W->>dakv: send OK message
 ```
-
-
 ### Example
 ```Rust
 use dakv::{Database, Options, ReadOptions, TestEnv, WriteOptions, DB};
